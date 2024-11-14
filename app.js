@@ -1,3 +1,4 @@
+// Importing necessary modules from @solana/web3.js
 import {
     Connection,
     clusterApiUrl,
@@ -17,7 +18,7 @@ let connectedWallet = null; // Store the connected wallet
 
 // 1. Create New Account and Airdrop 2 SOL
 async function createAccount() {
-    console.log("Create Account button clicked");  // Test log
+    console.log("Create Account button clicked");
     const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
     generatedAccount = Keypair.generate(); // Generate a new account
     console.log('New Account Public Key:', generatedAccount.publicKey.toBase58());
@@ -62,7 +63,6 @@ async function transferSOL(amount = 1) {
         console.error("Account or wallet not found. Please create an account and connect wallet first.");
         return;
     }
-    // Amount ko check karein ki yeh valid number hai
     if (isNaN(amount) || amount <= 0) {
         console.error("Invalid amount for transfer");
         return; // Exit the function if amount is not valid
@@ -72,15 +72,13 @@ async function transferSOL(amount = 1) {
         SystemProgram.transfer({
             fromPubkey: generatedAccount.publicKey,
             toPubkey: connectedWallet,
-            lamports: amount * LAMPORTS_PER_SOL, // SOL ko lamports mein convert karein
+            lamports: amount * LAMPORTS_PER_SOL,
         })
     );
 
     try {
         const signature = await sendAndConfirmTransaction(connection, transaction, [generatedAccount]);
         console.log('Transfer successful!', signature);
-
-        // Transfer ke baad balance check karein
         const remainingBalance = await checkBalance(generatedAccount.publicKey.toBase58());
         console.log(`Remaining balance after transfer: ${remainingBalance} SOL`);
     } catch (error) {
@@ -93,7 +91,6 @@ async function checkBalance(publicKey) {
     const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
     
     try {
-        // Balance ko fetch karna
         const balance = await connection.getBalance(new PublicKey(publicKey));
         console.log(`Balance of ${publicKey}: ${balance / LAMPORTS_PER_SOL} SOL`);
         return balance / LAMPORTS_PER_SOL; // Balance ko SOL mein return karein
@@ -106,3 +103,4 @@ async function checkBalance(publicKey) {
 window.createAccount = createAccount;
 window.connectPhantomWallet = connectPhantomWallet;
 window.transferSOL = transferSOL;
+window.checkBalance = checkBalance;
