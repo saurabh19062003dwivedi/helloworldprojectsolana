@@ -1,5 +1,5 @@
-projects for module - 2 deploy a hello world program 
-we are here create three buttons but we are ensure the setup before the start 
+projects for module - 2 deploy a hello world program .
+we are here create three buttons but we are ensure the setup before the start .
 Explanation of Each Button Function:
 Button 1 - Create a New Solana Account (createAccount function):
 
